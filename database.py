@@ -6,6 +6,6 @@ def get_connection():
         host="localhost",
         port=3306,
         user="pharmacy_user",
-        password="pharmacy123",
+        password="",
         database="pharmacy_management"
     )
