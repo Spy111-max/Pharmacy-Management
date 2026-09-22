@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bills | PharmaCare</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">💊</div>
+
+            <div>
+                <h2>PharmaCare</h2>
+                <span>Management System</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{{ url_for('dashboard') }}" class="nav-link">
+                <span>🏠</span> Dashboard
+            </a>
+
+            <a href="{{ url_for('medicines') }}" class="nav-link">
+                <span>💊</span> Medicines
+            </a>
+
+            <a href="{{ url_for('customers') }}" class="nav-link">
+                <span>👥</span> Customers
+            </a>
+
+            <a href="{{ url_for('suppliers') }}" class="nav-link">
+                <span>🚚</span> Suppliers
+            </a>
+
+            <a href="{{ url_for('prescriptions') }}" class="nav-link">
+                <span>📋</span> Prescriptions
+            </a>
+
+            <a href="{{ url_for('sales') }}" class="nav-link">
+                <span>🛒</span> Sales
+            </a>
+
+            <a href="{{ url_for('bills') }}" class="nav-link active">
+                <span>🧾</span> Bills
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="manager-box">
+
+                <div class="manager-avatar">M</div>
+
+                <div>
+                    <strong>Manager</strong>
+                    <small>Pharmacy Admin</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div>
+                <h1>Bills</h1>
+                <p>View generated pharmacy bills.</p>
+            </div>
+
+            <div class="topbar-user">
+                <div class="notification">🔔</div>
+                <div class="user-circle">M</div>
+            </div>
+
+        </header>
+
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <h2>Billing Records</h2>
+                    <p>Sales invoices and billing information.</p>
+                </div>
+
+                <span class="form-icon">🧾</span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Bill ID</th>
+                            <th>Sale ID</th>
+                            <th>Customer</th>
+                            <th>Amount</th>
+                            <th>Bill Date</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% for bill in bills %}
+
+                        <tr>
+
+                            <td>
+                                #{{ bill.bill_id }}
+                            </td>
+
+                            <td>
+                                #{{ bill.sale_id }}
+                            </td>
+
+                            <td>
+                                <strong>
+                                    {{ bill.customer_name }}
+                                </strong>
+                            </td>
+
+                            <td class="amount">
+                                ₹{{ bill.amount }}
+                            </td>
+
+                            <td>
+                                {{ bill.bill_date }}
+                            </td>
+
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="5" class="empty">
+                                No bills found.
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

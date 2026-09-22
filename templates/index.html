@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pharmacy Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">💊</div>
+            <div>
+                <h2>PharmaCare</h2>
+                <span>Management System</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{{ url_for('dashboard') }}" class="nav-link active">
+                <span>🏠</span>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('medicines') }}" class="nav-link">
+                <span>💊</span>
+                Medicines
+            </a>
+
+            <a href="{{ url_for('customers') }}" class="nav-link">
+                <span>👥</span>
+                Customers
+            </a>
+
+            <a href="{{ url_for('suppliers') }}" class="nav-link">
+                <span>🚚</span>
+                Suppliers
+            </a>
+
+            <a href="{{ url_for('prescriptions') }}" class="nav-link">
+                <span>📋</span>
+                Prescriptions
+            </a>
+
+            <a href="{{ url_for('sales') }}" class="nav-link">
+                <span>🛒</span>
+                Sales
+            </a>
+
+            <a href="{{ url_for('bills') }}" class="nav-link">
+                <span>🧾</span>
+                Bills
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="manager-box">
+                <div class="manager-avatar">M</div>
+                <div>
+                    <strong>Manager</strong>
+                    <small>Pharmacy Admin</small>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div>
+                <h1>Dashboard</h1>
+                <p>Welcome back to your pharmacy management system.</p>
+            </div>
+
+            <div class="topbar-user">
+                <div class="notification">🔔</div>
+                <div class="user-circle">M</div>
+            </div>
+
+        </header>
+
+
+        <!-- WELCOME -->
+        <section class="welcome-banner">
+
+            <div>
+                <span class="welcome-label">PHARMACY OVERVIEW</span>
+
+                <h2>Good day, Manager 👋</h2>
+
+                <p>
+                    Monitor medicines, customers, prescriptions,
+                    sales and inventory from one place.
+                </p>
+            </div>
+
+            <div class="welcome-icon">
+                💊
+            </div>
+
+        </section>
+
+
+        <!-- STAT CARDS -->
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-icon blue">💊</div>
+
+                <div>
+                    <span>Total Medicines</span>
+                    <h3>{{ total_medicines }}</h3>
+                    <small>Medicines in inventory</small>
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-icon green">👥</div>
+
+                <div>
+                    <span>Total Customers</span>
+                    <h3>{{ total_customers }}</h3>
+                    <small>Registered customers</small>
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-icon orange">⚠️</div>
+
+                <div>
+                    <span>Low Stock</span>
+                    <h3>{{ low_stock }}</h3>
+                    <small>Medicines need attention</small>
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-icon purple">₹</div>
+
+                <div>
+                    <span>Total Sales</span>
+                    <h3>₹{{ total_sales }}</h3>
+                    <small>Total recorded sales</small>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- MAIN DASHBOARD GRID -->
+        <section class="dashboard-grid">
+
+            <!-- RECENT SALES -->
+            <div class="panel large-panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h2>Recent Sales</h2>
+                        <p>Latest transactions</p>
+                    </div>
+
+                    <a href="{{ url_for('sales') }}" class="view-link">
+                        View All →
+                    </a>
+                </div>
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Sale ID</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        {% for sale in recent_sales %}
+
+                            <tr>
+                                <td>#{{ sale.sale_id }}</td>
+
+                                <td>
+                                    <strong>
+                                        {{ sale.customer_name }}
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    {{ sale.sale_date }}
+                                </td>
+
+                                <td class="amount">
+                                    ₹{{ sale.total_amount }}
+                                </td>
+                            </tr>
+
+                        {% else %}
+
+                            <tr>
+                                <td colspan="4" class="empty">
+                                    No sales recorded yet.
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOW STOCK -->
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h2>Low Stock</h2>
+                        <p>Restocking required</p>
+                    </div>
+
+                    <span class="warning-icon">⚠️</span>
+
+                </div>
+
+
+                <div class="medicine-list">
+
+                    {% for medicine in low_stock_medicines %}
+
+                    <div class="medicine-item">
+
+                        <div class="medicine-icon">
+                            💊
+                        </div>
+
+                        <div class="medicine-info">
+
+                            <strong>
+                                {{ medicine.medicine_name }}
+                            </strong>
+
+                            <small>
+                                Stock: {{ medicine.stock_quantity }}
+                            </small>
+
+                        </div>
+
+                        <span class="stock-badge">
+                            Low
+                        </span>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="empty-message">
+                        <span>✓</span>
+                        <p>All medicines have sufficient stock.</p>
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+            <!-- EXPIRING SOON -->
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h2>Expiring Soon</h2>
+                        <p>Within the next 30 days</p>
+                    </div>
+
+                    <span class="expiry-icon">⏳</span>
+
+                </div>
+
+
+                <div class="medicine-list">
+
+                    {% for medicine in expiring_medicines %}
+
+                    <div class="medicine-item">
+
+                        <div class="medicine-icon expiry">
+                            💊
+                        </div>
+
+                        <div class="medicine-info">
+
+                            <strong>
+                                {{ medicine.medicine_name }}
+                            </strong>
+
+                            <small>
+                                Expiry: {{ medicine.expiry_date }}
+                            </small>
+
+                        </div>
+
+                        <span class="expiry-badge">
+                            Soon
+                        </span>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="empty-message">
+                        <span>✓</span>
+                        <p>No medicines expiring soon.</p>
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUICK ACTIONS -->
+        <section class="quick-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Quick Actions</h2>
+                    <p>Common pharmacy operations</p>
+                </div>
+
+            </div>
+
+
+            <div class="quick-grid">
+
+                <a href="{{ url_for('medicines') }}"
+                   class="quick-card">
+
+                    <div class="quick-icon">💊</div>
+
+                    <div>
+                        <strong>Manage Medicines</strong>
+                        <span>Add and view medicines</span>
+                    </div>
+
+                    <b>→</b>
+
+                </a>
+
+
+                <a href="{{ url_for('customers') }}"
+                   class="quick-card">
+
+                    <div class="quick-icon green-bg">👥</div>
+
+                    <div>
+                        <strong>Manage Customers</strong>
+                        <span>View customer records</span>
+                    </div>
+
+                    <b>→</b>
+
+                </a>
+
+
+                <a href="{{ url_for('prescriptions') }}"
+                   class="quick-card">
+
+                    <div class="quick-icon purple-bg">📋</div>
+
+                    <div>
+                        <strong>Prescriptions</strong>
+                        <span>Manage prescriptions</span>
+                    </div>
+
+                    <b>→</b>
+
+                </a>
+
+
+                <a href="{{ url_for('sales') }}"
+                   class="quick-card">
+
+                    <div class="quick-icon orange-bg">🛒</div>
+
+                    <div>
+                        <strong>Record Sale</strong>
+                        <span>Create a new sale</span>
+                    </div>
+
+                    <b>→</b>
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

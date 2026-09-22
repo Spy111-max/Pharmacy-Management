@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prescriptions | PharmaCare</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">💊</div>
+
+            <div>
+                <h2>PharmaCare</h2>
+                <span>Management System</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{{ url_for('dashboard') }}" class="nav-link">
+                <span>🏠</span> Dashboard
+            </a>
+
+            <a href="{{ url_for('medicines') }}" class="nav-link">
+                <span>💊</span> Medicines
+            </a>
+
+            <a href="{{ url_for('customers') }}" class="nav-link">
+                <span>👥</span> Customers
+            </a>
+
+            <a href="{{ url_for('suppliers') }}" class="nav-link">
+                <span>🚚</span> Suppliers
+            </a>
+
+            <a href="{{ url_for('prescriptions') }}" class="nav-link active">
+                <span>📋</span> Prescriptions
+            </a>
+
+            <a href="{{ url_for('sales') }}" class="nav-link">
+                <span>🛒</span> Sales
+            </a>
+
+            <a href="{{ url_for('bills') }}" class="nav-link">
+                <span>🧾</span> Bills
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="manager-box">
+
+                <div class="manager-avatar">M</div>
+
+                <div>
+                    <strong>Manager</strong>
+                    <small>Pharmacy Admin</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div>
+                <h1>Prescriptions</h1>
+                <p>Manage customer prescriptions and medicines.</p>
+            </div>
+
+            <div class="topbar-user">
+                <div class="notification">🔔</div>
+                <div class="user-circle">M</div>
+            </div>
+
+        </header>
+
+
+        <section class="form-panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <h2>Add Prescription</h2>
+                    <p>Create a new prescription record.</p>
+                </div>
+
+                <span class="form-icon">📋</span>
+
+            </div>
+
+
+            <form action="{{ url_for('add_prescription') }}"
+                  method="POST"
+                  class="form-grid">
+
+                <div class="form-group">
+
+                    <label>Customer</label>
+
+                    <select name="customer_id" required>
+
+                        <option value="">
+                            Select Customer
+                        </option>
+
+                        {% for customer in customers %}
+
+                        <option value="{{ customer.customer_id }}">
+                            {{ customer.customer_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Medicine</label>
+
+                    <select name="medicine_id" required>
+
+                        <option value="">
+                            Select Medicine
+                        </option>
+
+                        {% for medicine in medicines %}
+
+                        <option value="{{ medicine.medicine_id }}">
+                            {{ medicine.medicine_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Dosage</label>
+
+                    <input type="text"
+                           name="dosage"
+                           placeholder="Example: 1 tablet twice daily"
+                           required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Quantity</label>
+
+                    <input type="number"
+                           name="quantity"
+                           min="1"
+                           placeholder="Enter quantity"
+                           required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Prescription Date</label>
+
+                    <input type="date"
+                           name="prescription_date"
+                           required>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button type="submit"
+                            class="primary-btn">
+
+                        + Add Prescription
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <h2>Prescription Records</h2>
+                    <p>Stored prescription information.</p>
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Dosage</th>
+                            <th>Date</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% for prescription in prescriptions %}
+
+                        <tr>
+
+                            <td>
+                                #{{ prescription.prescription_id }}
+                            </td>
+
+                            <td>
+                                <strong>
+                                    {{ prescription.customer_name }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ prescription.dosage }}
+                            </td>
+
+                            <td>
+                                {{ prescription.prescription_date }}
+                            </td>
+
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="4" class="empty">
+                                No prescriptions found.
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>
